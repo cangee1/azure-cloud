@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.5.1 # Update to a version supporting Node.js 16
+    - uses: actions/checkout@v3 # Update to a version supporting Node.js 20
     - name: Checking the file system listing for Pet Store App
       run: |
         ls -al
@@ -32,7 +32,7 @@ jobs:
     - name: Update the version.json
       run: echo -n -e "{\"version\":\"${{ github.sha }}\",\"date\":\"$(date '+%m-%d-%Y %H:%M:%S')\"}" > petstore/petstoreapp/src/main/resources/static/content/version.json
     - run: cat petstore/petstoreapp/src/main/resources/static/content/version.json
-    - uses: actions/setup-java@v2.5.1 # Update to a version supporting Node.js 16
+    - uses: actions/setup-java@v2.6.1 # Update to a version supporting Node.js 20
       name: Building Pet Store App with Java 13
       with:
         java-version: '13'
@@ -40,11 +40,11 @@ jobs:
     - name: Run Maven build
       run: mvn -f petstore/petstoreapp/pom.xml --batch-mode --update-snapshots verify
     - name: Upload Maven build artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: artifact
         path: petstore/petstoreapp/target/petstoreapp-0.0.1-SNAPSHOT.jar
-    - uses: azure/docker-login@v1
+    - uses: azure/docker-login@v2 # Update to a version supporting Node.js 20
       name: Build Docker image
       with:
         login-server: ${{ env.AZURE_CONTAINER_REGISTRY }}
